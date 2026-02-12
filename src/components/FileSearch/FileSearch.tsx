@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { 
-  TextField, 
-  Typography, 
-  IconButton, 
+import {
+  TextField,
+  Typography,
+  IconButton,
   Alert,
   Box,
-  Paper
+  Paper,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
-import { ListObjectsV2Command, GetObjectCommand, type _Object } from '@aws-sdk/client-s3';
+import {
+  ListObjectsV2Command,
+  GetObjectCommand,
+  type _Object,
+} from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { useS3Client } from '../../hooks/useS3Client';
 import { useStyles } from './FileSearch.s';
@@ -21,7 +25,10 @@ interface FileSearchProps {
   onBack: () => void;
 }
 
-export const FileSearch: React.FC<FileSearchProps> = ({ bucketName, onBack }) => {
+export const FileSearch: React.FC<FileSearchProps> = ({
+  bucketName,
+  onBack,
+}) => {
   const { classes } = useStyles();
   const s3 = useS3Client();
   const [prefix, setPrefix] = useState('');
@@ -31,20 +38,20 @@ export const FileSearch: React.FC<FileSearchProps> = ({ bucketName, onBack }) =>
 
   const handleSearch = async () => {
     if (!s3 || !bucketName) return;
-    
+
     setLoading(true);
     setError(null);
     try {
       const command = new ListObjectsV2Command({
         Bucket: bucketName,
         Prefix: prefix,
-        MaxKeys: 100 // Limit results for performance
+        MaxKeys: 100, // Limit results for performance
       });
       const response = await s3.send(command);
       setResults(response.Contents || []);
     } catch (err: any) {
-      console.error("Search failed", err);
-      setError(err.message || "Search failed");
+      console.error('Search failed', err);
+      setError(err.message || 'Search failed');
     } finally {
       setLoading(false);
     }
@@ -61,15 +68,19 @@ export const FileSearch: React.FC<FileSearchProps> = ({ bucketName, onBack }) =>
       const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
       window.open(url, '_blank');
     } catch (err: any) {
-      console.error("Download failed", err);
-      setError("Failed to generate download URL");
+      console.error('Download failed', err);
+      setError('Failed to generate download URL');
     }
   };
 
   const columns: GridColDef[] = [
     { field: 'Key', headerName: 'Key', flex: 1 },
-    { field: 'LastModified', headerName: 'Last Modified', width: 200, 
-      valueFormatter: (value: any) => value ? new Date(value).toLocaleString() : '' 
+    {
+      field: 'LastModified',
+      headerName: 'Last Modified',
+      width: 200,
+      valueFormatter: (value: any) =>
+        value ? new Date(value).toLocaleString() : '',
     },
     { field: 'Size', headerName: 'Size (Bytes)', width: 150 },
     {
@@ -87,7 +98,7 @@ export const FileSearch: React.FC<FileSearchProps> = ({ bucketName, onBack }) =>
 
   const rows = results.map((item, index) => ({
     id: item.Key || index, // DataGrid needs an ID
-    ...item
+    ...item,
   }));
 
   return (
@@ -96,28 +107,30 @@ export const FileSearch: React.FC<FileSearchProps> = ({ bucketName, onBack }) =>
         <IconButton onClick={onBack}>
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h6">
-          Files in: {bucketName}
-        </Typography>
+        <Typography variant='h6'>Files in: {bucketName}</Typography>
       </Box>
 
       <Paper className={classes.searchBar}>
-        <TextField 
-          fullWidth 
-          label="Search Prefix (starts with...)" 
-          variant="outlined" 
-          size="small"
+        <TextField
+          fullWidth
+          label='Search Prefix (starts with...)'
+          variant='outlined'
+          size='small'
           value={prefix}
           onChange={(e) => setPrefix(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-          placeholder="e.g. images/ or logs/2023-"
+          placeholder='e.g. images/ or logs/2023-'
         />
-        <IconButton onClick={handleSearch} color="primary" sx={{ p: '10px' }}>
-            <SearchIcon />
+        <IconButton onClick={handleSearch} color='primary' sx={{ p: '10px' }}>
+          <SearchIcon />
         </IconButton>
       </Paper>
 
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+      {error && (
+        <Alert severity='error' sx={{ mb: 2 }}>
+          {error}
+        </Alert>
+      )}
 
       <Box className={classes.dataGridContainer}>
         <DataGrid

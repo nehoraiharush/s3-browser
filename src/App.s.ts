@@ -33,9 +33,9 @@ export const useStyles = makeStyles()((theme) => ({
     overflow: 'hidden',
   },
   modeToggle: {
-      position: 'absolute',
-      top: theme.spacing(2),
-      right: theme.spacing(2),
-      zIndex: 1200, // Above drawer
-  }
+    position: 'absolute',
+    top: theme.spacing(2),
+    right: theme.spacing(2),
+    zIndex: 1200, // Above drawer
+  },
 }));

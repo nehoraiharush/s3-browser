@@ -16,7 +16,9 @@ const AccountContext = createContext<AccountContextType | undefined>(undefined);
 
 const repository: AccountRepository = new LocalAccountRepository();
 
-export const AccountProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AccountProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [activeAccount, setActiveAccount] = useState<Account | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -28,7 +30,7 @@ export const AccountProvider: React.FC<{ children: React.ReactNode }> = ({ child
       setAccounts(data);
       // Restore active account from session/local if desired, or just first one
       if (data.length > 0 && !activeAccount) {
-         // Optionally auto-select first one, or leave null
+        // Optionally auto-select first one, or leave null
       }
     } finally {
       setIsLoading(false);
@@ -41,7 +43,7 @@ export const AccountProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const addAccount = async (accountData: Omit<Account, 'id'>) => {
     const newAccount = await repository.add(accountData);
-    setAccounts(prev => [...prev, newAccount]);
+    setAccounts((prev) => [...prev, newAccount]);
     // Auto-select if it's the first one
     if (!activeAccount) {
       setActiveAccount(newAccount);
@@ -50,7 +52,7 @@ export const AccountProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const updateAccount = async (account: Account) => {
     await repository.update(account);
-    setAccounts(prev => prev.map(a => a.id === account.id ? account : a));
+    setAccounts((prev) => prev.map((a) => (a.id === account.id ? account : a)));
     if (activeAccount?.id === account.id) {
       setActiveAccount(account);
     }
@@ -58,27 +60,29 @@ export const AccountProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const deleteAccount = async (id: string) => {
     await repository.delete(id);
-    setAccounts(prev => prev.filter(a => a.id !== id));
+    setAccounts((prev) => prev.filter((a) => a.id !== id));
     if (activeAccount?.id === id) {
       setActiveAccount(null);
     }
   };
 
   const selectAccount = (id: string) => {
-    const account = accounts.find(a => a.id === id);
+    const account = accounts.find((a) => a.id === id);
     setActiveAccount(account || null);
   };
 
   return (
-    <AccountContext.Provider value={{
-      accounts,
-      activeAccount,
-      isLoading,
-      addAccount,
-      updateAccount,
-      deleteAccount,
-      selectAccount
-    }}>
+    <AccountContext.Provider
+      value={{
+        accounts,
+        activeAccount,
+        isLoading,
+        addAccount,
+        updateAccount,
+        deleteAccount,
+        selectAccount,
+      }}
+    >
       {children}
     </AccountContext.Provider>
   );

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { 
-  Dialog, 
-  DialogTitle, 
-  DialogContent, 
-  DialogActions, 
-  TextField, 
-  Button, 
-  Stack 
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  Stack,
 } from '@mui/material';
 import { useAccount } from '../../context/AccountContext';
 
@@ -15,7 +15,10 @@ interface AddAccountDialogProps {
   onClose: () => void;
 }
 
-export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({ open, onClose }) => {
+export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({
+  open,
+  onClose,
+}) => {
   const { addAccount } = useAccount();
   const [name, setName] = useState('');
   const [accessKeyId, setAccessKeyId] = useState('');
@@ -29,7 +32,7 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({ open, onClos
         name,
         accessKeyId,
         secretAccessKey,
-        endpoint: endpoint || undefined
+        endpoint: endpoint || undefined,
       });
       // Reset form
       setName('');
@@ -41,13 +44,13 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({ open, onClos
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+    <Dialog open={open} onClose={onClose} maxWidth='sm' fullWidth>
       <form onSubmit={handleSubmit}>
         <DialogTitle>Add AWS Account</DialogTitle>
         <DialogContent>
           <Stack spacing={2} sx={{ mt: 1 }}>
             <TextField
-              label="Account Name (Display)"
+              label='Account Name (Display)'
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -55,33 +58,35 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({ open, onClos
               autoFocus
             />
             <TextField
-              label="Access Key ID"
+              label='Access Key ID'
               value={accessKeyId}
               onChange={(e) => setAccessKeyId(e.target.value)}
               required
               fullWidth
             />
             <TextField
-              label="Secret Access Key"
+              label='Secret Access Key'
               value={secretAccessKey}
               onChange={(e) => setSecretAccessKey(e.target.value)}
               required
               fullWidth
-              type="password"
+              type='password'
             />
             <TextField
-              label="Endpoint URL (Optional)"
+              label='Endpoint URL (Optional)'
               value={endpoint}
               onChange={(e) => setEndpoint(e.target.value)}
               fullWidth
-              placeholder="http://localhost:4568"
-              helperText="Leave empty for standard AWS S3. Use http://localhost:4568 for local s3rver."
+              placeholder='http://localhost:4568'
+              helperText='Leave empty for standard AWS S3. Use http://localhost:4568 for local s3rver.'
             />
           </Stack>
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
-          <Button type="submit" variant="contained">Add Account</Button>
+          <Button type='submit' variant='contained'>
+            Add Account
+          </Button>
         </DialogActions>
       </form>
     </Dialog>

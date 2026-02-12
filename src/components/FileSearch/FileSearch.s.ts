@@ -26,14 +26,17 @@ export const useStyles = makeStyles()((theme) => ({
     flexGrow: 1,
     minHeight: 0,
     '& .MuiDataGrid-root': {
-        border: 'none',
-        '& .MuiDataGrid-cell': {
-            borderBottom: `1px solid ${theme.palette.divider}`,
-        },
-        '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.02)',
-            borderBottom: `1px solid ${theme.palette.divider}`,
-        }
-    }
+      border: 'none',
+      '& .MuiDataGrid-cell': {
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      },
+      '& .MuiDataGrid-columnHeaders': {
+        backgroundColor:
+          theme.palette.mode === 'dark'
+            ? 'rgba(255, 255, 255, 0.05)'
+            : 'rgba(0, 0, 0, 0.02)',
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      },
+    },
   },
 }));

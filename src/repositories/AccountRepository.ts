@@ -10,7 +10,7 @@ export class LocalAccountRepository implements AccountRepository {
 
   async getById(id: string): Promise<Account | null> {
     const accounts = await this.getAll();
-    return accounts.find(a => a.id === id) || null;
+    return accounts.find((a) => a.id === id) || null;
   }
 
   async add(account: Omit<Account, 'id'>): Promise<Account> {
@@ -26,7 +26,7 @@ export class LocalAccountRepository implements AccountRepository {
 
   async update(account: Account): Promise<void> {
     const accounts = await this.getAll();
-    const index = accounts.findIndex(a => a.id === account.id);
+    const index = accounts.findIndex((a) => a.id === account.id);
     if (index !== -1) {
       accounts[index] = account;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(accounts));
@@ -35,7 +35,7 @@ export class LocalAccountRepository implements AccountRepository {
 
   async delete(id: string): Promise<void> {
     const accounts = await this.getAll();
-    const filtered = accounts.filter(a => a.id !== id);
+    const filtered = accounts.filter((a) => a.id !== id);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
   }
 }

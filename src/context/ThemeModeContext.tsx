@@ -1,4 +1,10 @@
-import React, { createContext, useState, useMemo, useContext, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useMemo,
+  useContext,
+  useEffect,
+} from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { getThemeOptions } from '../theme/theme';
 
@@ -14,10 +20,12 @@ const ThemeModeContext = createContext<ThemeModeContextType>({
 
 export const useThemeMode = () => useContext(ThemeModeContext);
 
-export const ThemeModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ThemeModeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [mode, setMode] = useState<'light' | 'dark'>(() => {
     const savedMode = localStorage.getItem('themeMode');
-    return (savedMode === 'light' || savedMode === 'dark') ? savedMode : 'dark';
+    return savedMode === 'light' || savedMode === 'dark' ? savedMode : 'dark';
   });
 
   useEffect(() => {
@@ -38,9 +46,7 @@ export const ThemeModeProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   return (
     <ThemeModeContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-            {children}
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ThemeModeContext.Provider>
   );
 };
