@@ -1,4 +1,4 @@
-import type { Account, AccountRepository } from '../types/account';
+import type { Account, AccountRepository } from '../models/account';
 
 const STORAGE_KEY = 's3-browser-accounts';
 

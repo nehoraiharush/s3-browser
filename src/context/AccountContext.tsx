@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import type { Account, AccountRepository } from '../types/account';
+import type { Account, AccountRepository } from '../models/account';
 import { LocalAccountRepository } from '../repositories/AccountRepository';
 
 interface AccountContextType {
