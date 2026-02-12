@@ -36,6 +36,7 @@ export const BucketBrowser: React.FC<BucketBrowserProps> = ({ onBucketSelect, se
       try {
         const command = new ListBucketsCommand({});
         const response = await s3.send(command);
+        
         setBuckets(response.Buckets || []);
       } catch (err: any) {
         console.error("Failed to list buckets", err);
@@ -63,19 +64,20 @@ export const BucketBrowser: React.FC<BucketBrowserProps> = ({ onBucketSelect, se
   if (error) {
     return <Alert severity="error">Error listing buckets: {error}</Alert>;
   }
+console.log({buckets});
 
   return (
     <Box className={classes.container}>
       <Box className={classes.header}>
         <Typography variant="h5">
-            Buckets in {activeAccount.name}
+            Buckets in "{activeAccount.name}"
         </Typography>
       </Box>
       
       <Box className={classes.bucketGrid}>
         {buckets.map((bucket) => (
-          <Box key={bucket.Name} className={classes.bucketItemWrapper}>
             <Card 
+                key={bucket.Name}
                 className={cx(classes.card, { [classes.selectedCard]: selectedBucket === bucket.Name })}
             >
               <CardActionArea 
@@ -95,7 +97,6 @@ export const BucketBrowser: React.FC<BucketBrowserProps> = ({ onBucketSelect, se
                 </CardContent>
               </CardActionArea>
             </Card>
-          </Box>
         ))}
         {buckets.length === 0 && (
           <Box className={classes.emptyState}>

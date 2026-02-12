@@ -12,12 +12,6 @@ export const useStyles = makeStyles()((theme) => ({
     flexWrap: 'wrap',
     gap: theme.spacing(2),
   },
-  bucketItemWrapper: {
-    width: '100%',
-    [theme.breakpoints.up('sm')]: { width: '48%' },
-    [theme.breakpoints.up('md')]: { width: '30%' },
-    [theme.breakpoints.up('lg')]: { width: '22%' },
-  },
   card: {
     border: '1px solid rgba(255, 255, 255, 0.12)',
     height: '100%',
