@@ -1,0 +1,2 @@
+Hello from Local S3!
+This is a test file to verify the S3 Browser app.
