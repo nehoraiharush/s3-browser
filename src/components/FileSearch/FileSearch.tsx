@@ -19,6 +19,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { useS3Client } from '../../hooks/useS3Client';
 import { useStyles } from './FileSearch.s';
+import { downloadFile } from '../../BL/Files/downloadFile';
 
 interface FileSearchProps {
   bucketName: string;
@@ -63,15 +64,10 @@ export const FileSearch: React.FC<FileSearchProps> = ({
   };
 
   const handleDownload = async (key: string) => {
-    if (!s3 || !bucketName) return;
+    if (!s3) return;
 
     try {
-      const command = new GetObjectCommand({
-        Bucket: bucketName,
-        Key: key,
-      });
-      const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
-      window.open(url, '_blank');
+      await downloadFile(s3, { Bucket: bucketName, Key: key });
     } catch (err: any) {
       console.error('Download failed', err);
       setError('Failed to generate download URL');
