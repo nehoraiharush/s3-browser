@@ -20,6 +20,7 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({
   onClose,
 }) => {
   const { addAccount } = useAccount();
+
   const [name, setName] = useState('');
   const [accessKeyId, setAccessKeyId] = useState('');
   const [secretAccessKey, setSecretAccessKey] = useState('');
@@ -27,6 +28,7 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (name && accessKeyId && secretAccessKey) {
       await addAccount({
         name,
@@ -78,7 +80,6 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({
               onChange={(e) => setEndpoint(e.target.value)}
               fullWidth
               placeholder='http://localhost:4568'
-              helperText='Leave empty for standard AWS S3. Use http://localhost:4568 for local s3rver.'
             />
           </Stack>
         </DialogContent>
