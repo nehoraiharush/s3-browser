@@ -36,6 +36,11 @@ export const FileSearch: React.FC<FileSearchProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /* useEffect to initial load */
+  React.useEffect(() => {
+    handleSearch();
+  }, [bucketName, s3]);
+
   const handleSearch = async () => {
     if (!s3 || !bucketName) return;
 
