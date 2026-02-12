@@ -9,8 +9,10 @@ import {
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
+import DownloadIcon from '@mui/icons-material/Download';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
-import { ListObjectsV2Command, type _Object } from '@aws-sdk/client-s3';
+import { ListObjectsV2Command, GetObjectCommand, type _Object } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { useS3Client } from '../../hooks/useS3Client';
 import { useStyles } from './FileSearch.s';
 
@@ -48,12 +50,39 @@ export const FileSearch: React.FC<FileSearchProps> = ({ bucketName, onBack }) =>
     }
   };
 
+  const handleDownload = async (key: string) => {
+    if (!s3 || !bucketName) return;
+
+    try {
+      const command = new GetObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      });
+      const url = await getSignedUrl(s3, command, { expiresIn: 3600 });
+      window.open(url, '_blank');
+    } catch (err: any) {
+      console.error("Download failed", err);
+      setError("Failed to generate download URL");
+    }
+  };
+
   const columns: GridColDef[] = [
     { field: 'Key', headerName: 'Key', flex: 1 },
     { field: 'LastModified', headerName: 'Last Modified', width: 200, 
       valueFormatter: (value: any) => value ? new Date(value).toLocaleString() : '' 
     },
     { field: 'Size', headerName: 'Size (Bytes)', width: 150 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      sortable: false,
+      renderCell: (params) => (
+        <IconButton onClick={() => handleDownload(params.row.Key)}>
+          <DownloadIcon />
+        </IconButton>
+      ),
+    },
   ];
 
   const rows = results.map((item, index) => ({
