@@ -63,7 +63,7 @@ export const AccountManager: React.FC = () => {
               >
                 <ListItemText 
                     primary={account.name} 
-                    secondary={account.region} 
+                    secondary={account.endpoint} 
                 />
               </ListItemButton>
             </ListItem>

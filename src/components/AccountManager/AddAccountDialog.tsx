@@ -20,7 +20,7 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({ open, onClos
   const [name, setName] = useState('');
   const [accessKeyId, setAccessKeyId] = useState('');
   const [secretAccessKey, setSecretAccessKey] = useState('');
-  const [region, setRegion] = useState('us-east-1');
+  const [endpoint, setEndpoint] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,13 +29,13 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({ open, onClos
         name,
         accessKeyId,
         secretAccessKey,
-        region
+        endpoint: endpoint || undefined
       });
       // Reset form
       setName('');
       setAccessKeyId('');
       setSecretAccessKey('');
-      setRegion('us-east-1');
+      setEndpoint('');
       onClose();
     }
   };
@@ -70,11 +70,12 @@ export const AddAccountDialog: React.FC<AddAccountDialogProps> = ({ open, onClos
               type="password"
             />
             <TextField
-              label="Region"
-              value={region}
-              onChange={(e) => setRegion(e.target.value)}
-              required
+              label="Endpoint URL (Optional)"
+              value={endpoint}
+              onChange={(e) => setEndpoint(e.target.value)}
               fullWidth
+              placeholder="http://localhost:4568"
+              helperText="Leave empty for standard AWS S3. Use http://localhost:4568 for local s3rver."
             />
           </Stack>
         </DialogContent>

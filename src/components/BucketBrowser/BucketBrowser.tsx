@@ -68,7 +68,7 @@ export const BucketBrowser: React.FC<BucketBrowserProps> = ({ onBucketSelect, se
     <Box className={classes.container}>
       <Box className={classes.header}>
         <Typography variant="h5">
-            Buckets in {activeAccount.name} ({activeAccount.region})
+            Buckets in {activeAccount.name}
         </Typography>
       </Box>
       
