@@ -11,12 +11,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
 import { DataGrid, type GridColDef } from '@mui/x-data-grid';
-import {
-  ListObjectsV2Command,
-  GetObjectCommand,
-  type _Object,
-} from '@aws-sdk/client-s3';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { ListObjectsV2Command, type _Object } from '@aws-sdk/client-s3';
 import { useS3Client } from '../../hooks/useS3Client';
 import { useStyles } from './FileSearch.s';
 import { downloadFile } from '../../BL/Files/downloadFile';
