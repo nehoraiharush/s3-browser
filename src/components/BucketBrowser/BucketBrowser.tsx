@@ -9,8 +9,8 @@ import {
   Box,
 } from '@mui/material';
 import StorageIcon from '@mui/icons-material/Storage';
-import { ListBucketsCommand, type Bucket } from '@aws-sdk/client-s3';
-import { useS3Client } from '../../hooks/useS3Client';
+import { type Bucket } from '@aws-sdk/client-s3';
+import { s3Api } from '../../services/s3Api';
 import { useAccount } from '../../context/AccountContext';
 import { useStyles } from './BucketBrowser.s';
 
@@ -25,22 +25,20 @@ export const BucketBrowser: React.FC<BucketBrowserProps> = ({
 }) => {
   const { classes, cx } = useStyles();
   const { activeAccount } = useAccount();
-  const s3 = useS3Client();
   const [buckets, setBuckets] = useState<Bucket[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  /* useEffect to initial load */
   useEffect(() => {
     const listBuckets = async () => {
-      if (!s3 || !activeAccount) return;
+      if (!activeAccount) return;
 
       setLoading(true);
       setError(null);
       try {
-        const command = new ListBucketsCommand({});
-        const response = await s3.send(command);
-
-        setBuckets(response.Buckets || []);
+        const data = await s3Api.listBuckets(activeAccount);
+        setBuckets(data || []);
       } catch (err: any) {
         console.error('Failed to list buckets', err);
         setError(err.message || 'Failed to list buckets');
@@ -50,7 +48,7 @@ export const BucketBrowser: React.FC<BucketBrowserProps> = ({
     };
 
     listBuckets();
-  }, [s3, activeAccount]);
+  }, [activeAccount]);
 
   if (!activeAccount) {
     return (

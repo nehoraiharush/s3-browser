@@ -4,6 +4,7 @@ export interface Account {
   accessKeyId: string;
   secretAccessKey: string;
   endpoint?: string; // Optional custom endpoint (e.g., http://localhost:4568)
+  region?: string; // Optional region
 }
 
 export interface AccountRepository {

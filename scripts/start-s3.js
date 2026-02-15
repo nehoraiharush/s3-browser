@@ -31,49 +31,17 @@ new S3rver({
       configs: [corsConfig],
     },
   ],
-}).run((err) => {
+}).run(async (err) => {
   if (err) {
     console.error('S3rver error:', err);
     return;
   }
   console.log('S3rver running internally.');
 
-  // 2. Start Express Proxy (External)
-  const app = express();
+  console.log('S3rver running internally at http://127.0.0.1:' + S3_PORT);
 
-  // Force CORS on *everything*
-  app.use(
-    cors({
-      origin: '*',
-      methods: ['GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-      allowedHeaders: ['*'],
-      exposedHeaders: ['ETag', 'x-amz-request-id', 'x-amz-id-2'],
-      credentials: true,
-    }),
-  );
-
-  // Proxy requests to S3rver
-  app.use(
-    '/',
-    createProxyMiddleware({
-      target: `http://127.0.0.1:${S3_PORT}`,
-      changeOrigin: true,
-      ws: true,
-      logLevel: 'debug', // Show us what's happening
-    }),
-  );
-
-  app.listen(PROXY_PORT, async () => {
-    console.log(
-      `\n✅ Local S3 Proxy listening at http://localhost:${PROXY_PORT}`,
-    );
-    console.log(
-      `Use this endpoint in your App: http://localhost:${PROXY_PORT}`,
-    );
-
-    // 3. Seed Data
-    await injectMockFiles();
-  });
+  // 3. Seed Data
+  await injectMockFiles();
 });
 
 const injectMockFiles = async () => {
@@ -85,7 +53,7 @@ const injectMockFiles = async () => {
     const { S3Client, PutObjectCommand } = await import('@aws-sdk/client-s3');
     const client = new S3Client({
       region: 'us-east-1',
-      endpoint: `http://localhost:${PROXY_PORT}`,
+      endpoint: `http://localhost:${S3_PORT}`,
       credentials: { accessKeyId: 'S3RVER', secretAccessKey: 'S3RVER' },
       forcePathStyle: true,
     });
