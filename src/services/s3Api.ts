@@ -1,6 +1,6 @@
 import type { Account } from '../models/account';
 
-const API_BASE = '/api/s3';
+const API_BASE = '/s3';
 
 export const s3Api = {
   listBuckets: async (account: Account) => {
